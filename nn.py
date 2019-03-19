@@ -2,8 +2,8 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 # XOR
-x=np.array(([0,0],[0,1],[1,0],[1,1]), dtype=float)
-y=np.array(([0],[1],[1],[0]), dtype=float)
+x=np.array(([0,0],[0,1],[1,0],[1,1]))
+y=np.array(([0],[1],[1],[0]))
 
 class NN:
     def __init__(self, x, y):
@@ -25,16 +25,18 @@ class NN:
         e_weights3 = np.dot(delta, self.weights3.T)
         d_weights3 = np.dot(e_weights3, logistic_deriv(self.weights3))
 
+        ## what goes here??? 
         delta2 = loss_function(self.y, self.output) * logistic_deriv(self.layer2)
         e_weights2 = np.dot(delta2, self.weights2.T)
         d_weights2 = np.dot(e_weights2, logistic_deriv(self.weights2))
 
-        # Weight update
-        # self.weights1 -= 0.1 * self.weights1 * d_weights1
-        # self.weights2 -= 0.1 * self.weights2 * d_weights2
+        # delta3 = loss_function(self.y, self.output) * logistic_deriv(self.layer1)
+        # e_weights1 = np.dot(self.weights1, delta3)
+        # d_weights1 = np.dot(e_weights1, logistic_deriv(self.weights1))
+
         self.weights3 -= 0.1 * np.dot(self.weights3.T, d_weights3)
-        self.weights2 -= 0.1 * np.dot(self.weights2.T, d_weights2)
-        print(self.weights2)
+        self.weights2 -= 0.1 * np.dot(self.weights2, d_weights2)
+        #self.weights1 -= 0.1 * np.dot(self.weights1, d_weights1)
 
     def network_architecture(self):
         print("Input layer", self.input)
