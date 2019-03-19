@@ -21,22 +21,20 @@ class NN:
         return self.output
 
     def back_prop(self):
-        # Error
-        e_weights3 = loss_function(self.y, self.output) * logistic_deriv(self.output)
-        d_weights3 = np.dot(self.layer2.T, e_weights3)        
-        e_weights2 = np.dot(e_weights3, self.weights3.T) * logistic_deriv(self.layer2)
-        d_weights2 = np.dot(self.layer1.T, e_weights2)        
-        e_weights1 = np.dot(e_weights2, self.weights2.T) * logistic_deriv(self.layer1)
-        d_weights1 = np.dot(self.input.T, e_weights1)        
-        
-        # print('En', d_weights1)
-        # print('To', d_weights2)
-        # print('Tre', d_weights3)
+        delta = loss_function(self.y, self.output) * logistic_deriv(self.output)
+        e_weights3 = np.dot(delta, self.weights3.T)
+        d_weights3 = np.dot(e_weights3, logistic_deriv(self.weights3))
+
+        delta2 = loss_function(self.y, self.output) * logistic_deriv(self.layer2)
+        e_weights2 = np.dot(delta2, self.weights2.T)
+        d_weights2 = np.dot(e_weights2, logistic_deriv(self.weights2))
 
         # Weight update
-        self.weights1 += d_weights1
-        self.weights2 += d_weights2
-        self.weights3 += d_weights3
+        # self.weights1 -= 0.1 * self.weights1 * d_weights1
+        # self.weights2 -= 0.1 * self.weights2 * d_weights2
+        self.weights3 -= 0.1 * np.dot(self.weights3.T, d_weights3)
+        self.weights2 -= 0.1 * np.dot(self.weights2.T, d_weights2)
+        print(self.weights2)
 
     def network_architecture(self):
         print("Input layer", self.input)
@@ -49,15 +47,15 @@ def logistic_function(z):
 
 # Derivative function
 def logistic_deriv(z):
-    return z * (1 - z)
+    return logistic_function(z) * (1 - logistic_function(z))
 
 # Squared loss function
 def loss_function(target_y, output_y):
-    return 2 * (target_y - output_y)
+    return 0.5 * (target_y - output_y)**2
 
 network = NN(x, y)
 
-for i in range(100):    
+for i in range(1):    
     network.forward_prop()
     network.back_prop()
 
