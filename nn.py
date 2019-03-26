@@ -10,9 +10,12 @@ y=np.array(([0],[1],[1],[0]), dtype=np.float128)
 
 class NN:
     def __init__(self, x, y):
-        self.weights1 = np.random.normal(loc=0, scale=1, size=(2,3))
-        self.weights2 = np.random.normal(loc=0, scale=1, size=(3,4))
-        self.weights3 = np.random.normal(loc=0, scale=1, size=(4,1))
+        # self.weights1 = np.random.normal(loc=0, scale=1, size=(2,3))
+        # self.weights2 = np.random.normal(loc=0, scale=1, size=(3,4))
+        # self.weights3 = np.random.normal(loc=0, scale=1, size=(4,1))
+        self.weights1 = np.random.uniform(-0.5, 0.5, (2,3))
+        self.weights2 = np.random.uniform(-0.5, 0.5, (3,4))
+        self.weights3 = np.random.uniform(-0.5, 0.5, (4,1))
     
     def forward_prop(self, training_data):
         self.layer1 = relu(np.dot(training_data, self.weights1))
